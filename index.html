@@ -617,22 +617,6 @@ section{
 .thank-you-btn:hover{ transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 34px rgba(0,0,0,0.22); }
 .thank-you-btn:active{ transform: translateY(0) scale(0.98); }
 
-.countdown-wrap{ margin-top: 40px; }
-.countdown-label{
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  opacity: 0.75;
-  margin-bottom: 8px;
-}
-.countdown{
-  font-family: var(--font-display);
-  font-size: clamp(24px, 6vw, 32px);
-  font-weight: 600;
-  letter-spacing: 1px;
-  font-variant-numeric: tabular-nums;
-}
-
 /* =========================================================
    5. FOOTER
    ========================================================= */
@@ -907,10 +891,6 @@ section{
           Thank You for Everything ❤️
         </button>
 
-        <div class="countdown-wrap">
-          <p class="countdown-label">You've been celebrated for</p>
-          <p class="countdown" id="countdown">00:00:00</p>
-        </div>
       </div>
     </section>
 
@@ -1260,24 +1240,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ticking = true;
     }
   });
-
-  /* ============================================================
-     10. COUNTDOWN — time since visitor opened the page
-  ============================================================ */
-  const countdownEl = document.getElementById('countdown');
-  const pageOpenTime = Date.now();
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function updateCountdown() {
-    const elapsed = Math.floor((Date.now() - pageOpenTime) / 1000);
-    const h = Math.floor(elapsed / 3600);
-    const m = Math.floor((elapsed % 3600) / 60);
-    const s = elapsed % 60;
-    countdownEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
 
   /* ============================================================
      11. "THANK YOU" MODAL
