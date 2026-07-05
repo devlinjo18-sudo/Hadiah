@@ -1263,24 +1263,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ============================================================
-     10. COUNTDOWN — time since visitor opened the page
-  ============================================================ */
-  const countdownEl = document.getElementById('countdown');
-  const pageOpenTime = Date.now();
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function updateCountdown() {
-    const elapsed = Math.floor((Date.now() - pageOpenTime) / 1000);
-    const h = Math.floor(elapsed / 3600);
-    const m = Math.floor((elapsed % 3600) / 60);
-    const s = elapsed % 60;
-    countdownEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-
-  /* ============================================================
      11. "THANK YOU" MODAL
   ============================================================ */
   const modalOverlay = document.getElementById('modal-overlay');
