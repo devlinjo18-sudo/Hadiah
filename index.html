@@ -906,6 +906,11 @@ section{
         <button class="thank-you-btn" id="thank-you-btn" type="button">
           Thank You for Everything ❤️
         </button>
+
+        <div class="countdown-wrap">
+          <p class="countdown-label">You've been celebrated for</p>
+          <p class="countdown" id="countdown">00:00:00</p>
+        </div>
       </div>
     </section>
 
@@ -1256,6 +1261,24 @@ document.addEventListener('DOMContentLoaded', () => {
       ticking = true;
     }
   });
+
+  /* ============================================================
+     10. COUNTDOWN — time since visitor opened the page
+  ============================================================ */
+  const countdownEl = document.getElementById('countdown');
+  const pageOpenTime = Date.now();
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateCountdown() {
+    const elapsed = Math.floor((Date.now() - pageOpenTime) / 1000);
+    const h = Math.floor(elapsed / 3600);
+    const m = Math.floor((elapsed % 3600) / 60);
+    const s = elapsed % 60;
+    countdownEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 
   /* ============================================================
      11. "THANK YOU" MODAL
