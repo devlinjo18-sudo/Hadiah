@@ -121,6 +121,22 @@ button{ font-family: inherit; cursor: pointer; border: none; background: none; }
   color: var(--ink-soft);
   font-style: italic;
 }
+.loader-greeting{
+  min-height: 34px;
+  max-width: 320px;
+  margin: 0 auto;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 6vw, 28px);
+  font-weight: 500;
+  line-height: 1.3;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.loader-greeting.in{
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* =========================================================
    FX CANVAS (confetti + fireworks)
@@ -777,6 +793,7 @@ section{
         <span class="seal-number">130</span>
       </div>
       <p class="loader-text">wrapping up something special…</p>
+      <p class="loader-text loader-greeting" id="loader-greeting"></p>
     </div>
   </div>
 
@@ -955,6 +972,42 @@ document.addEventListener('DOMContentLoaded', () => {
      1. LOADING SCREEN
   ============================================================ */
   const loadingScreen = document.getElementById('loading-screen');
+
+  /* ---- Added: cycling greeting text above the original loader text ---- */
+  const loaderGreetingEl = document.getElementById('loader-greeting');
+  const LOADER_GREETINGS = [
+    "hallo",
+    "Are you Sharon Karli?",
+    "It's your birthday today, isn't it?",
+    "Happy birthday yeahh 🎉"
+  ];
+  const FADE_IN  = 320;  // ms — quick, snappy arrival
+  const FADE_OUT = 550;  // ms — slower, lingering exit
+
+  function holdTimeFor(text) {
+    const words = text.trim().split(/\s+/).length;
+    return Math.min(2600, Math.max(750, 420 + words * 380));
+  }
+
+  let greetingsDone = false;
+  function cycleGreetings(index) {
+    if (index >= LOADER_GREETINGS.length) {
+      greetingsDone = true;
+      return;
+    }
+    const text = LOADER_GREETINGS[index];
+    loaderGreetingEl.style.transitionDuration = `${FADE_IN}ms`;
+    loaderGreetingEl.textContent = text;
+    requestAnimationFrame(() => loaderGreetingEl.classList.add('in'));
+    setTimeout(() => {
+      loaderGreetingEl.style.transitionDuration = `${FADE_OUT}ms`;
+      loaderGreetingEl.classList.remove('in');
+      setTimeout(() => cycleGreetings(index + 1), FADE_OUT);
+    }, holdTimeFor(text));
+  }
+  cycleGreetings(0);
+  /* ---- End added block ---- */
+
   window.addEventListener('load', () => {
     setTimeout(() => {
       loadingScreen.classList.add('hidden');
