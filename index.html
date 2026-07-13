@@ -989,10 +989,23 @@ document.addEventListener('DOMContentLoaded', () => {
     return Math.min(2600, Math.max(750, 420 + words * 380));
   }
 
+  function revealLoadingScreen() {
+    if (loadingScreen.classList.contains('hidden')) return;
+    loadingScreen.classList.add('hidden');
+    startCelebrationFX();
+    typeHeroMessage();
+  }
+
+  let pageLoaded = false;
   let greetingsDone = false;
+  function tryReveal() {
+    if (pageLoaded && greetingsDone) revealLoadingScreen();
+  }
+
   function cycleGreetings(index) {
     if (index >= LOADER_GREETINGS.length) {
       greetingsDone = true;
+      tryReveal();
       return;
     }
     const text = LOADER_GREETINGS[index];
@@ -1009,20 +1022,14 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---- End added block ---- */
 
   window.addEventListener('load', () => {
-    setTimeout(() => {
-      loadingScreen.classList.add('hidden');
-      startCelebrationFX();
-      typeHeroMessage();
-    }, 900);
+    pageLoaded = true;
+    tryReveal();
   });
-  // Safety net in case 'load' fires slowly on mobile networks
+  // Safety net in case 'load' fires slowly on mobile networks, or the
+  // greeting sequence takes longer than expected
   setTimeout(() => {
-    if (!loadingScreen.classList.contains('hidden')) {
-      loadingScreen.classList.add('hidden');
-      startCelebrationFX();
-      typeHeroMessage();
-    }
-  }, 3500);
+    revealLoadingScreen();
+  }, 10000);
 
   /* ============================================================
      2. TYPED HERO MESSAGE
