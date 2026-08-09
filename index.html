@@ -532,16 +532,15 @@ section{
 }
 
 .msg-card{
-  background: var(--white-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
+  position: relative;
+  min-height: 176px;
   border-radius: var(--radius-md);
-  padding: 26px 24px;
   box-shadow: 0 10px 30px rgba(71,54,58,0.08);
   transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
   opacity: 0;
   transform: translateY(28px);
+  cursor: pointer;
+  perspective: 1200px;
 }
 .msg-card.in-view{
   opacity: 1;
@@ -550,8 +549,90 @@ section{
 .msg-card:hover{
   transform: translateY(-6px);
   box-shadow: 0 20px 44px rgba(201,125,145,0.22);
-  border-color: rgba(203,163,92,0.55);
 }
+.msg-card.in-view.opened:hover{
+  transform: translateY(0);
+}
+
+/* ---- envelope face (default / closed state) ---- */
+.msg-card-envelope{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--blush) 0%, var(--cream-deep) 100%);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  transition: opacity 0.5s var(--ease), transform 0.6s var(--ease);
+  transform-origin: top center;
+  backface-visibility: hidden;
+}
+.msg-card-envelope::before{
+  /* envelope flap */
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(160deg, rgba(255,255,255,0.55), rgba(255,255,255,0.15));
+  clip-path: polygon(0 0, 100% 0, 50% 68%);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.envelope-icon{
+  font-size: 28px;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s var(--ease);
+}
+.msg-card:hover .envelope-icon{ transform: translateY(-2px) scale(1.06); }
+.msg-card-envelope .msg-card-name{
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0;
+}
+.msg-card-tap{
+  position: relative;
+  z-index: 1;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+/* ---- letter face (revealed state) ---- */
+.msg-card-letter{
+  position: relative;
+  background: var(--white-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 26px 24px;
+  height: 100%;
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.55s var(--ease) 0.1s, transform 0.55s var(--ease) 0.1s;
+}
+
+/* ---- opened state: flip envelope away, fade letter in ---- */
+.msg-card.opened .msg-card-envelope{
+  opacity: 0;
+  transform: rotateX(-90deg);
+  pointer-events: none;
+}
+.msg-card.opened .msg-card-letter{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
 .msg-card-name{
   font-family: var(--font-display);
   font-size: 19px;
@@ -1290,9 +1371,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.createElement('div');
     card.className = 'msg-card';
     card.innerHTML = `
-      <p class="msg-card-name">${m.name}</p>
-      <p class="msg-card-text">"${m.text}"</p>
+      <div class="msg-card-envelope">
+        <span class="envelope-icon">💌</span>
+        <p class="msg-card-name">${m.name}</p>
+        <p class="msg-card-tap">Tap to open</p>
+      </div>
+      <div class="msg-card-letter">
+        <p class="msg-card-name">${m.name}</p>
+        <p class="msg-card-text">"${m.text}"</p>
+      </div>
     `;
+    card.addEventListener('click', () => {
+      card.classList.toggle('opened');
+      if (card.classList.contains('opened')) {
+        spawnConfetti(14);
+        if (!fxRunning) { fxRunning = true; fxLoop(); setTimeout(() => { fxRunning = false; }, 1200); }
+      }
+    });
     messagesGrid.appendChild(card);
   });
 
