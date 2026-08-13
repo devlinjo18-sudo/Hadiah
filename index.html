@@ -670,48 +670,183 @@ section{
   text-align: center;
   background: linear-gradient(155deg,#1E3A8A,#2563EB 60%,#60A5FA);
   border-radius: var(--radius-lg);
-  padding: clamp(40px, 8vw, 64px) clamp(24px, 6vw, 48px);
+  padding: clamp(48px, 9vw, 72px) clamp(26px, 6vw, 52px);
   color: #fff;
-  box-shadow: 0 24px 60px rgba(201,125,145,0.35);
+  box-shadow: 0 24px 60px rgba(30,58,138,0.4), 0 2px 0 rgba(255,255,255,0.15) inset;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.18);
 }
+/* soft radial glow + subtle dotted texture */
 .appreciation-card::before{
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.18), transparent 55%);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.22), transparent 50%),
+    radial-gradient(circle at 85% 85%, rgba(255,255,255,0.12), transparent 55%),
+    radial-gradient(circle, rgba(255,255,255,0.18) 1px, transparent 1.4px);
+  background-size: auto, auto, 22px 22px;
   pointer-events: none;
 }
-.appreciation-seal{
-  width: 56px; height: 56px;
-  margin: 0 auto 18px;
+/* fine gold hairline border inset */
+.appreciation-card::after{
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(251,191,36,0.28);
+  border-radius: calc(var(--radius-lg) - 10px);
+  pointer-events: none;
+}
+/* corner flourishes */
+.appreciation-card .corner-flourish{
+  position: absolute;
+  width: 34px; height: 34px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.appreciation-card .corner-flourish svg{ width: 100%; height: 100%; display: block; }
+.appreciation-card .corner-flourish.tl{ top: 18px; left: 18px; }
+.appreciation-card .corner-flourish.tr{ top: 18px; right: 18px; transform: scaleX(-1); }
+.appreciation-card .corner-flourish.bl{ bottom: 18px; left: 18px; transform: scaleY(-1); }
+.appreciation-card .corner-flourish.br{ bottom: 18px; right: 18px; transform: scale(-1,-1); }
+
+/* tiny sparkles scattered around the card */
+.appreciation-card .mini-sparkle{
+  position: absolute;
+  font-size: 12px;
+  color: var(--gold-light);
+  opacity: 0.7;
+  animation: mini-sparkle-twinkle 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes mini-sparkle-twinkle{
+  0%, 100%{ opacity: 0.25; transform: scale(0.8); }
+  50%{ opacity: 0.9; transform: scale(1.15); }
+}
+
+.appreciation-kicker{
+  position: relative;
+  font-size: 11px;
+  letter-spacing: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 18px;
+}
+
+.appreciation-seal-wrap{
+  position: relative;
+  width: 74px; height: 74px;
+  margin: 0 auto 20px;
+}
+.appreciation-seal-ring{
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.28);
+  animation: ring-breathe 3s ease-in-out infinite;
+}
+.appreciation-seal{
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.65);
+  background: rgba(255,255,255,0.08);
   display: flex; align-items: center; justify-content: center;
   font-size: 22px;
+  box-shadow: 0 0 0 6px rgba(255,255,255,0.06), 0 8px 20px rgba(0,0,0,0.15);
   animation: heart-pulse 3s ease-in-out infinite;
 }
+@keyframes ring-breathe{
+  0%, 100%{ transform: scale(1); opacity: 0.7; }
+  50%{ transform: scale(1.12); opacity: 0.25; }
+}
+
+.appreciation-divider{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 22px auto;
+  max-width: 200px;
+  opacity: 0.55;
+}
+.appreciation-divider span{
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+}
+.appreciation-divider .diamond{
+  width: 6px; height: 6px;
+  flex: none;
+  background: var(--gold-light);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
 .appreciation-text{
-  font-size: clamp(14px, 3.6vw, 16.5px);
-  line-height: 1.85;
-  opacity: 0.95;
+  position: relative;
+  font-size: clamp(14.5px, 3.6vw, 17px);
+  line-height: 1.9;
+  opacity: 0.96;
   max-width: 460px;
   margin: 0 auto;
 }
+.appreciation-text strong{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.12em;
+  color: #fff;
+  letter-spacing: 0.2px;
+}
+
+.appreciation-signature{
+  margin-top: 26px;
+  font-family: var(--font-script);
+  font-size: clamp(26px, 6vw, 32px);
+  color: var(--gold-light);
+  line-height: 1;
+}
+.appreciation-signature-sub{
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+
 .thank-you-btn{
+  position: relative;
   margin-top: 34px;
-  padding: 15px 30px;
+  padding: 15px 32px;
   border-radius: 999px;
   background: #fff;
   color: var(--rose-deep);
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.18);
   transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  overflow: hidden;
+  isolation: isolate;
 }
-.thank-you-btn:hover{ transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 34px rgba(0,0,0,0.22); }
+.thank-you-btn::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 30%, rgba(147,197,253,0.35) 48%, transparent 66%);
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease);
+}
+.thank-you-btn:hover::before{ transform: translateX(120%); }
+.thank-you-btn .btn-heart{
+  display: inline-block;
+  margin-left: 2px;
+  animation: heart-pulse 1.6s ease-in-out infinite;
+}
+.thank-you-btn:hover{ transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 34px rgba(0,0,0,0.24); }
 .thank-you-btn:active{ transform: translateY(0) scale(0.98); }
 
 /* =========================================================
@@ -1006,18 +1141,49 @@ section{
     <!-- ================= 4. APPRECIATION SECTION ================= -->
     <section class="appreciation-section reveal" id="appreciation">
       <div class="appreciation-card">
-        <div class="appreciation-seal">❤</div>
+
+        <!-- corner flourishes -->
+        <span class="corner-flourish tl" aria-hidden="true"><svg viewBox="0 0 34 34" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.2"><path d="M2 14 C2 6 6 2 14 2" /><circle cx="2" cy="20" r="1.4" fill="rgba(255,255,255,0.8)" stroke="none"/><circle cx="20" cy="2" r="1.4" fill="rgba(255,255,255,0.8)" stroke="none"/></svg></span>
+        <span class="corner-flourish tr" aria-hidden="true"><svg viewBox="0 0 34 34" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.2"><path d="M2 14 C2 6 6 2 14 2" /><circle cx="2" cy="20" r="1.4" fill="rgba(255,255,255,0.8)" stroke="none"/><circle cx="20" cy="2" r="1.4" fill="rgba(255,255,255,0.8)" stroke="none"/></svg></span>
+        <span class="corner-flourish bl" aria-hidden="true"><svg viewBox="0 0 34 34" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.2"><path d="M2 14 C2 6 6 2 14 2" /><circle cx="2" cy="20" r="1.4" fill="rgba(255,255,255,0.8)" stroke="none"/><circle cx="20" cy="2" r="1.4" fill="rgba(255,255,255,0.8)" stroke="none"/></svg></span>
+        <span class="corner-flourish br" aria-hidden="true"><svg viewBox="0 0 34 34" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.2"><path d="M2 14 C2 6 6 2 14 2" /><circle cx="2" cy="20" r="1.4" fill="rgba(255,255,255,0.8)" stroke="none"/><circle cx="20" cy="2" r="1.4" fill="rgba(255,255,255,0.8)" stroke="none"/></svg></span>
+
+        <!-- scattered sparkles -->
+        <span class="mini-sparkle" style="top:14%; left:12%; animation-delay:0s;" aria-hidden="true">✦</span>
+        <span class="mini-sparkle" style="top:22%; right:14%; animation-delay:0.8s;" aria-hidden="true">✧</span>
+        <span class="mini-sparkle" style="bottom:20%; left:9%; animation-delay:1.5s;" aria-hidden="true">✧</span>
+        <span class="mini-sparkle" style="bottom:16%; right:11%; animation-delay:2.1s;" aria-hidden="true">✦</span>
+
+        <p class="appreciation-kicker">With Love &amp; Gratitude</p>
+
+        <div class="appreciation-seal-wrap">
+          <span class="appreciation-seal-ring" aria-hidden="true"></span>
+          <div class="appreciation-seal">❤</div>
+        </div>
+
         <h2 class="section-title light">Thank You</h2>
+
+        <div class="appreciation-divider" aria-hidden="true">
+          <span></span><span class="diamond"></span><span></span>
+        </div>
+
         <p class="appreciation-text">
-          Thank you for being an amazing leader, mentor, and friend.
+          Thank you for being an <strong>amazing leader, mentor, and friend</strong>.
           <br><br>
           May God continue to bless your life, your family, your dreams, and your ministry.
           <br><br>
           We are grateful to have you as our CGL.
         </p>
 
+        <div class="appreciation-divider" aria-hidden="true">
+          <span></span><span class="diamond"></span><span></span>
+        </div>
+
+        <p class="appreciation-signature">With love, CG 130</p>
+        <p class="appreciation-signature-sub">Your family in Christ</p>
+
         <button class="thank-you-btn" id="thank-you-btn" type="button">
-          Thank You for Everything ❤️
+          Thank You for Everything <span class="btn-heart">❤️</span>
         </button>
 
       </div>
