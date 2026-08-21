@@ -1120,9 +1120,6 @@ section{
         <div class="slide">
           <img src="images/photo4.jpeg" alt="Memory with Sharon 4" onerror="this.parentElement.classList.add('img-fallback')">
         </div>
-        <div class="slide">
-          <img src="images/photo5.jpeg" alt="Memory with Sharon 5" onerror="this.parentElement.classList.add('img-fallback')">
-        </div>
 
         <div class="slide-dots" id="slide-dots"></div>
       </div>
@@ -1403,7 +1400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
         ctx.restore();
       } else if (p.type === 'spark') {
-        p.x += p.speedX;
+        p.x += p.speedX;http://localhost:5173/
         p.y += p.speedY;
         p.speedY += 0.03; // gravity
         p.life -= p.decay;
